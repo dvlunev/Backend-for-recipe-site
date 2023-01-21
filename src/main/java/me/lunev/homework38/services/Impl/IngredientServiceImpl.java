@@ -26,7 +26,11 @@ public class IngredientServiceImpl implements IngredientService {
 
     @PostConstruct
     private void init() {
-        readFromFile();
+        try {
+            readFromFile();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -57,7 +61,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Map<Integer, Ingredient> getAllIngredients() {
-        return new HashMap<>(ingredients);
+        return ingredients;
     }
 
     private void saveToFile() {

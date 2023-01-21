@@ -3,13 +3,11 @@ package me.lunev.homework38.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 @NoArgsConstructor
 @Getter
-@ToString
 @EqualsAndHashCode
 public class Recipe {
 
@@ -46,5 +44,13 @@ public class Recipe {
 
     public void setCookingSteps(List<String> cookingSteps) {
         this.cookingSteps = cookingSteps;
+    }
+
+    @Override
+    public String toString() {
+        return name +
+                "\nВремя приготовления: " + cookingTime + " минут." +
+                "\nИнгредиенты:\n" + ingredients +
+                "\nИнструкция приготовления:\n" + cookingSteps;
     }
 }

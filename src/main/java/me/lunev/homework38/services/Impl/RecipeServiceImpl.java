@@ -10,6 +10,11 @@ import me.lunev.homework38.services.RecipeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +36,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @PostConstruct
     private void init() {
-        readFromFile();
+        try {
+            readFromFile();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -67,15 +76,18 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe getRecipeOfIdIng2(int idIng1, int idIng2) {
-        Ingredient ingredient1 = ingredients.get(idIng1);
-        Ingredient ingredient2 = ingredients.get(idIng2);
+    public List<Recipe> getRecipeOfIdsIng(Integer... idsIng) {
+        List<Ingredient> ingredientList = new ArrayList<>();
+        List<Recipe> recipesList = new ArrayList<>();
+        for (int i = 0; i < idsIng.length; i++) {
+            ingredientList.add(ingredients.get(idsIng[i]));
+        }
         for (Recipe recipe : recipes.values()) {
-            if (recipe.getIngredients().contains(ingredient1) && recipe.getIngredients().contains(ingredient2)) {
-                return recipe;
+            if (recipe.getIngredients().containsAll(ingredientList)) {
+                recipesList.add(recipe);
             }
         }
-        return null;
+        return recipesList;
     }
 
     @Override
@@ -114,14 +126,57 @@ public class RecipeServiceImpl implements RecipeService {
         }
     }
 
-    private void readFromFile() {
+    @Override
+    public void readFromFile() {
         try {
             String json = filesService.readFromRecipesFile();
-            String json1 = filesService.readFromIngredientsFile();
+            String jsonIng = filesService.readFromIngredientsFile();
             recipes = new ObjectMapper().readValue(json, new TypeReference<Map<Integer, Recipe>>(){});
-            ingredients = new ObjectMapper().readValue(json1, new TypeReference<Map<Integer, Ingredient>>(){});
+            ingredients = new ObjectMapper().readValue(jsonIng, new TypeReference<Map<Integer, Ingredient>>(){});
+            for (Recipe recipe : recipes.values()) {
+                for (int i = 0; i < recipe.getIngredients().size(); i++) {
+                    if (!ingredients.containsValue(recipe.getIngredients().get(i))) {
+                        ingredients.put(idIng++,recipe.getIngredients().get(i));
+                    }
+                }
+            }
+            jsonIng = new ObjectMapper().writeValueAsString(ingredients);
+            filesService.saveIngredientToFile(jsonIng);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Recipe> getRecipeOfPage(int pageNumber) {
+        List<Recipe> recipesList = new ArrayList<>();
+        for (Integer idRecipe : recipes.keySet()) {
+            if (idRecipe > (pageNumber * 10 - 10) && idRecipe <= pageNumber * 10) {
+                recipesList.add(recipes.get(idRecipe));
+            }
+        }
+        return recipesList;
+    }
+
+    @Override
+    public Path createAllRecipesReport() throws IOException {
+        Path path = filesService.createTempFiles("allRecipesReport");
+        for (Map.Entry<Integer, Recipe> recipe : recipes.entrySet()) {
+            try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
+                writer.append("Рецепт № " + recipe.getKey() + "\n" + recipe.getValue().getName() +
+                        "\nВремя приготовления: " + recipe.getValue().getCookingTime() + " минут." +
+                        "\nИнгредиенты:");
+                for (Ingredient ingredient : recipe.getValue().getIngredients()) {
+                    writer.append(ingredient.toString());
+                }
+                writer.append("\nИнструкция приготовления:\n");
+                int i = 1;
+                for (String cookingStep : recipe.getValue().getCookingSteps()) {
+                    writer.append(i++ + " " + cookingStep + "\n");
+                }
+                writer.append("\n");
+            }
+        }
+        return path;
     }
 }
