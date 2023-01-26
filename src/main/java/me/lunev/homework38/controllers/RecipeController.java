@@ -11,9 +11,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.lunev.homework38.model.Recipe;
 import me.lunev.homework38.services.RecipeService;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +46,7 @@ public class RecipeController {
                     description = "Рецепт и его ингредиенты были добавлены",
                     content = {
                             @Content(
-                                    mediaType = "addlication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
@@ -70,7 +77,7 @@ public class RecipeController {
                     description = "Рецепт был найден",
                     content = {
                             @Content(
-                                    mediaType = "addlication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
@@ -104,7 +111,7 @@ public class RecipeController {
                     description = "Рецепт был найден",
                     content = {
                             @Content(
-                                    mediaType = "addlication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
@@ -139,7 +146,7 @@ public class RecipeController {
                     description = "Рецепт был найден",
                     content = {
                             @Content(
-                                    mediaType = "addlication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
@@ -150,13 +157,43 @@ public class RecipeController {
             )
     }
     )
-    @GetMapping("/idIng1/{idIng1}/idIng2/{idIng2}")
-    public ResponseEntity<Recipe> getRecipeOfIdIng(@PathVariable int idIng1, @PathVariable int idIng2) {
-        Recipe recipe = recipeService.getRecipeOfIdIng2(idIng1, idIng2);
-        if (recipe == null) {
+    @GetMapping("/idsIng/{idsIng}")
+    public ResponseEntity<List<Recipe>> getRecipeOfIdIng(@PathVariable Integer... idsIng) {
+        List<Recipe> recipesList = new ArrayList<>(recipeService.getRecipeOfIdsIng(idsIng));
+        if (recipesList.size() == 0) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(recipe);
+        return ResponseEntity.ok(recipesList);
+    }
+
+    @Operation(
+            summary = "Поиск всех рецептов",
+            description = "Вывод рецептов постранично 10 шт на странице"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Рецепты были найдены",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Рецепты не были найдены"
+            )
+    }
+    )
+    @GetMapping("/pageNumber/{pageNumber}")
+    public ResponseEntity<List<Recipe>> getRecipeOfPage(@PathVariable int pageNumber) {
+        List<Recipe> recipesList = new ArrayList<>(recipeService.getRecipeOfPage(pageNumber));
+        if (recipesList.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(recipesList);
     }
 
     @Operation(
@@ -169,7 +206,7 @@ public class RecipeController {
                     description = "Рецепты были найдены",
                     content = {
                             @Content(
-                                    mediaType = "addlication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
@@ -181,12 +218,51 @@ public class RecipeController {
     }
     )
     @GetMapping
-    public ResponseEntity<Map<Integer, Recipe>> getAllIngredients() {
-        Map<Integer, Recipe> listRecipes = recipeService.getAllRecipes();
-        if (listRecipes == null) {
+    public ResponseEntity<Map<Integer, Recipe>> getAllRecipes() {
+        if (recipeService.getAllRecipes() == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(listRecipes);
+        return ResponseEntity.ok(recipeService.getAllRecipes());
+    }
+
+    @Operation(
+            summary = "Получение файла всех рецептов",
+            description = "Возвращает в файл список всех рецептов, без параметров"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Рецепты были найдены",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Рецепты не были найдены"
+            )
+    }
+    )
+    @GetMapping("/report")
+    public ResponseEntity<Object> getAllRecipesReport() {
+        try {
+            Path path = recipeService.createAllRecipesReport();
+            if (Files.size(path) == 0) {
+                return ResponseEntity.notFound().build();
+            }
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .contentLength(Files.size(path))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"allRecieps-report.txt\"")
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(e.toString());
+        }
     }
 
     @Operation(
@@ -203,7 +279,7 @@ public class RecipeController {
                     description = "Рецепт был изменен",
                     content = {
                             @Content(
-                                    mediaType = "addlication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
@@ -241,7 +317,7 @@ public class RecipeController {
                     description = "Рецепт был удален",
                     content = {
                             @Content(
-                                    mediaType = "addlication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }

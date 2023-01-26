@@ -3,12 +3,10 @@ package me.lunev.homework38.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor
 @Getter
-@ToString
 @EqualsAndHashCode
 public class Ingredient {
 
@@ -44,5 +42,10 @@ public class Ingredient {
             unitMeasurement = "По вкусу";
         }
         this.unitMeasurement = unitMeasurement;
+    }
+
+    @Override
+    public String toString() {
+        return "\n• " + name + " - " + amount + " " + unitMeasurement;
     }
 }

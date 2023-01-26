@@ -107,11 +107,10 @@ public class IngredientController {
     )
     @GetMapping
     public ResponseEntity<Map<Integer, Ingredient>> getAllIngredients() {
-        Map<Integer, Ingredient> listIngredients = ingredientService.getAllIngredients();
-        if (listIngredients == null) {
+        if (ingredientService.getAllIngredients() == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(listIngredients);
+        return ResponseEntity.ok(ingredientService.getAllIngredients());
     }
 
     @Operation(

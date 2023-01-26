@@ -100,4 +100,13 @@ public class FilesServiceImpl implements FilesService {
     public File getDataFile(String filePath, String fileName) {
         return new File(filePath + "/" + fileName);
     }
+
+    @Override
+    public Path createTempFiles(String suffix) {
+        try {
+            return Files.createTempFile(Path.of(recipesFilePath), "tempFile", suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

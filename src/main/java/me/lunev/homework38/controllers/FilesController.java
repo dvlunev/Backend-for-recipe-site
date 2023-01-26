@@ -1,6 +1,7 @@
 package me.lunev.homework38.controllers;
 
 import me.lunev.homework38.services.FilesService;
+import me.lunev.homework38.services.RecipeService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -18,8 +19,11 @@ public class FilesController {
 
     private final FilesService filesService;
 
-    public FilesController(FilesService filesService) {
+    private final RecipeService recipeService;
+
+    public FilesController(FilesService filesService, RecipeService recipeService) {
         this.filesService = filesService;
+        this.recipeService = recipeService;
     }
 
     @GetMapping("/recipe/export")
@@ -45,6 +49,7 @@ public class FilesController {
 
         try (FileOutputStream fos = new FileOutputStream(recipesFile)) {
             IOUtils.copy(file.getInputStream(), fos);
+            recipeService.readFromFile();
             return ResponseEntity.ok().build();
         } catch (IOException e) {
             e.printStackTrace();

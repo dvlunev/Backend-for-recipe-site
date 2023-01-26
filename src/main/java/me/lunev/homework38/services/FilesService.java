@@ -1,6 +1,7 @@
 package me.lunev.homework38.services;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public interface FilesService {
 
@@ -19,4 +20,6 @@ public interface FilesService {
     File getIngredientsFile();
 
     File getRecipesFile();
+
+    Path createTempFiles(String suffix);
 }
