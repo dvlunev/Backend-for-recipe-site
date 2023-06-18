@@ -12,16 +12,11 @@ Backend:
 - Maven
 - Spring Boot
 - Spring Web
-- Spring Data
-- Spring JPA
 - GIT 	 
 - REST
 - Swagger 	
 - Stream API
 - Postman
-
-SQL:
-- PostgreSQL
 
 ### User`s functionality: ###
 
