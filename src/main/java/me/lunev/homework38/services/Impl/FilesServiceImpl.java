@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * The service class containing the implementation of the interface {@link FilesService}
+ */
 @Service
 public class FilesServiceImpl implements FilesService {
 
@@ -62,7 +65,7 @@ public class FilesServiceImpl implements FilesService {
         return cleanDataFile(ingredientsFilePath, ingredientsFileName);
     }
 
-    private boolean saveDataToFile(String json, String  filePath, String  fileName) {
+    private boolean saveDataToFile(String json, String filePath, String fileName) {
         try {
             cleanDataFile(filePath, fileName);
             Files.writeString(Path.of(filePath, fileName), json);
@@ -78,7 +81,7 @@ public class FilesServiceImpl implements FilesService {
             Path path = Path.of(filePath, fileName);
             if (!Files.exists(path)) {
                 Files.createFile(path);
-                Files.writeString(path,"{}");
+                Files.writeString(path, "{}");
             }
             return Files.readString(path);
         } catch (IOException e) {
@@ -97,6 +100,7 @@ public class FilesServiceImpl implements FilesService {
             return false;
         }
     }
+
     public File getDataFile(String filePath, String fileName) {
         return new File(filePath + "/" + fileName);
     }

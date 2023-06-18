@@ -9,18 +9,21 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Class - controller with the app Information, containing a set of API endpoints
+ */
 @RestController
-@Tag(name = "Информация", description = "Информация о приложении")
+@Tag(name = "Information", description = "App Information")
 public class InfoController {
 
     @Operation(
-            summary = "Информация о запуске приложения",
-            description = "Возвращает информацию о запуске приложения"
+            summary = "Application Launch Information",
+            description = "Returns information about the launch of the application"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Приложение запущено",
+                    description = "Application launched",
                     content = {
                             @Content(
                                     mediaType = "String"
@@ -31,17 +34,17 @@ public class InfoController {
     )
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public String start() {
-        return "Приложение запущено";
+        return "Application launched";
     }
 
     @Operation(
-            summary = "Информация о приложении",
-            description = "Возвращает информацию об авторе, названии, дате создания и названии приложения"
+            summary = "App Information",
+            description = "Returns information about the author, title, creation date, and application title"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Информация о приложении",
+                    description = "App Information",
                     content = {
                             @Content(
                                     mediaType = "String"
@@ -52,6 +55,6 @@ public class InfoController {
     )
     @GetMapping("/info")
     public String info() {
-        return "Дмитрий Course3 12.01.2023 Приложение для сайта рецептов";
+        return "Dmitrii Lunev Course3 12.01.2023 Recipe website app";
     }
 }

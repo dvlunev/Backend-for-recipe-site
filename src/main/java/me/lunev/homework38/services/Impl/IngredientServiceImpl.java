@@ -13,6 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The service class containing the implementation of the interface {@link IngredientService}
+ *
+ * @see FilesService
+ */
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
@@ -35,7 +40,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient addIngredient(Ingredient ingredient) {
-        ingredients.put(idIng++,ingredient);
+        ingredients.put(idIng++, ingredient);
         saveToFile();
         return ingredient;
     }
@@ -76,7 +81,8 @@ public class IngredientServiceImpl implements IngredientService {
     private void readFromFile() {
         try {
             String json = filesService.readFromIngredientsFile();
-            ingredients = new ObjectMapper().readValue(json, new TypeReference<Map<Integer, Ingredient>>(){});
+            ingredients = new ObjectMapper().readValue(json, new TypeReference<Map<Integer, Ingredient>>() {
+            });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

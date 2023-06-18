@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The class describes an Ingredient
+ */
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode

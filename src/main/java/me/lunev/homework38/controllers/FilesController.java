@@ -13,6 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
+/**
+ * Class - controller for working with files, containing a set of API endpoints
+ *
+ * @see FilesService
+ * @see RecipeService
+ */
 @RestController
 @RequestMapping("/files")
 public class FilesController {
@@ -35,7 +41,7 @@ public class FilesController {
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_JSON)
                     .contentLength(file.length())
-                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"RecipesLog.json\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"RecipesLog.json\"")
                     .body(resource);
         } else {
             return ResponseEntity.noContent().build();
@@ -66,7 +72,7 @@ public class FilesController {
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_JSON)
                     .contentLength(file.length())
-                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"IngredientsLog.json\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"IngredientsLog.json\"")
                     .body(resource);
         } else {
             return ResponseEntity.noContent().build();

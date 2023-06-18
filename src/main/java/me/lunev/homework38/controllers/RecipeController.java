@@ -25,9 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class - controller for working with recipes, containing a set of API endpoints
+ *
+ * @see RecipeService
+ */
 @RestController
 @RequestMapping("/recipe")
-@Tag(name = "Рецепты", description = "CRUD-операции и другие эндпоинты для работы с рецептами")
+@Tag(name = "Recipes", description = "CRUD operations and other endpoints for working with recipes")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -37,13 +42,13 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Добавление рецепта и его ингредиентов",
-            description = "Добавление нового рецепта и его ингредиентов из тела запроса с присвоением им id из генератора"
+            summary = "Adding a Recipe and Its Ingredients",
+            description = "Adding a new recipe and its ingredients from the request body, assigning them an id from the generator"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепт и его ингредиенты были добавлены",
+                    description = "The recipe and its ingredients have been added",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -53,7 +58,7 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Некорректные параметры рецепта"
+                    description = "Incorrect recipe parameters"
             )
     }
     )
@@ -64,17 +69,17 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Поиск рецепта по id рецепта",
-            description = "Можно искать по одному параметру"
+            summary = "Recipe search by recipe id",
+            description = "You can search by one parameter"
     )
-    @Parameters( value = {
+    @Parameters(value = {
             @Parameter(name = "id", example = "1")
     }
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепт был найден",
+                    description = "The recipe has been found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -84,7 +89,7 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Рецепт не был найден"
+                    description = "The Recipe is not found"
             )
     }
     )
@@ -98,17 +103,17 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Поиск рецепта по id ингредиента",
-            description = "Можно искать по одному параметру"
+            summary = "Search recipe by ingredient id",
+            description = "You can search by one parameter"
     )
-    @Parameters( value = {
+    @Parameters(value = {
             @Parameter(name = "idIng", example = "1")
     }
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепт был найден",
+                    description = "The recipe has been found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -118,7 +123,7 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Рецепт не был найден"
+                    description = "The Recipe is not found"
             )
     }
     )
@@ -132,10 +137,10 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Поиск рецепта по двум id ингредиентов",
-            description = "Можно искать по двум параметрам"
+            summary = "Recipe search by two ingredient id",
+            description = "You can search by two parameters"
     )
-    @Parameters( value = {
+    @Parameters(value = {
             @Parameter(name = "idIng1", example = "1"),
             @Parameter(name = "idIng2", example = "2")
     }
@@ -143,7 +148,7 @@ public class RecipeController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепт был найден",
+                    description = "The recipe has been found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -153,7 +158,7 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Рецепт не был найден"
+                    description = "The Recipe is not found"
             )
     }
     )
@@ -167,13 +172,13 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Поиск всех рецептов",
-            description = "Вывод рецептов постранично 10 шт на странице"
+            summary = "Search all recipes",
+            description = "Output of recipes per page 10 pcs per page"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепты были найдены",
+                    description = "Recipes have been found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -183,7 +188,7 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Рецепты не были найдены"
+                    description = "Recipes is not found"
             )
     }
     )
@@ -197,13 +202,13 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Поиск всех рецептов",
-            description = "Возвращает список всех рецептов, без параметров"
+            summary = "Search all recipes",
+            description = "Returns a list of all recipes, no parameters"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепты были найдены",
+                    description = "Recipes have been found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -213,7 +218,7 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Рецепты не были найдены"
+                    description = "Recipes is not found"
             )
     }
     )
@@ -226,13 +231,13 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Получение файла всех рецептов",
-            description = "Возвращает в файл список всех рецептов, без параметров"
+            summary = "Getting a file of all recipes",
+            description = "Returns a list of all recipes to the file, without parameters"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепты были найдены",
+                    description = "Recipes have been found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -242,7 +247,7 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Рецепты не были найдены"
+                    description = "Recipes is not found"
             )
     }
     )
@@ -266,17 +271,17 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Изменение рецепта по id рецепта",
-            description = "Можно искать по одному параметру"
+            summary = "Changing a recipe by recipe id",
+            description = "You can search by one parameter"
     )
-    @Parameters( value = {
+    @Parameters(value = {
             @Parameter(name = "id", example = "1")
     }
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепт был изменен",
+                    description = "Recipe has been changed",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -286,11 +291,11 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Некорректные параметры рецепта"
+                    description = "Incorrect recipe parameters"
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Рецепт не был найден"
+                    description = "The Recipe is not found"
             )
     }
     )
@@ -304,17 +309,17 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Удаление рецепта по id рецепта",
-            description = "Можно искать по одному параметру"
+            summary = "Deleting a recipe by recipe id",
+            description = "You can search by one parameter"
     )
-    @Parameters( value = {
+    @Parameters(value = {
             @Parameter(name = "id", example = "1")
     }
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Рецепт был удален",
+                    description = "The Recipe has been deleted",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -324,7 +329,7 @@ public class RecipeController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Рецепт не был найден"
+                    description = "The Recipe is not found"
             )
     }
     )

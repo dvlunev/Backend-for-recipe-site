@@ -7,6 +7,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Service class interface IngredientServiceImpl containing a set of CRUD operations on a recipe object
+ */
 public interface RecipeService {
 
     Recipe addRecipe(Recipe recipe);

@@ -23,6 +23,11 @@ import java.util.Map;
 import static me.lunev.homework38.services.Impl.IngredientServiceImpl.idIng;
 import static me.lunev.homework38.services.Impl.IngredientServiceImpl.ingredients;
 
+/**
+ * The service class containing the implementation of the interface {@link RecipeService}
+ *
+ * @see FilesService
+ */
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
@@ -47,10 +52,10 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe addRecipe(Recipe recipe) {
         for (int i = 0; i < recipe.getIngredients().size(); i++) {
             if (!ingredients.containsValue(recipe.getIngredients().get(i))) {
-                ingredients.put(idIng++,recipe.getIngredients().get(i));
+                ingredients.put(idIng++, recipe.getIngredients().get(i));
             }
         }
-        recipes.put(id++,recipe);
+        recipes.put(id++, recipe);
         saveToFile();
         return recipe;
     }
@@ -131,12 +136,14 @@ public class RecipeServiceImpl implements RecipeService {
         try {
             String json = filesService.readFromRecipesFile();
             String jsonIng = filesService.readFromIngredientsFile();
-            recipes = new ObjectMapper().readValue(json, new TypeReference<Map<Integer, Recipe>>(){});
-            ingredients = new ObjectMapper().readValue(jsonIng, new TypeReference<Map<Integer, Ingredient>>(){});
+            recipes = new ObjectMapper().readValue(json, new TypeReference<Map<Integer, Recipe>>() {
+            });
+            ingredients = new ObjectMapper().readValue(jsonIng, new TypeReference<Map<Integer, Ingredient>>() {
+            });
             for (Recipe recipe : recipes.values()) {
                 for (int i = 0; i < recipe.getIngredients().size(); i++) {
                     if (!ingredients.containsValue(recipe.getIngredients().get(i))) {
-                        ingredients.put(idIng++,recipe.getIngredients().get(i));
+                        ingredients.put(idIng++, recipe.getIngredients().get(i));
                     }
                 }
             }

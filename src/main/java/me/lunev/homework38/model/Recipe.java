@@ -6,6 +6,12 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+
+/**
+ * The class describes a Recipe
+ *
+ * @see Ingredient
+ */
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode

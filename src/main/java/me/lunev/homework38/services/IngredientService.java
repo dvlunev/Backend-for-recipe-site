@@ -5,6 +5,9 @@ import me.lunev.homework38.model.Ingredient;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Service class interface IngredientServiceImpl containing a set of CRUD operations on an ingredient object
+ */
 public interface IngredientService {
 
     Ingredient addIngredient(Ingredient ingredient);

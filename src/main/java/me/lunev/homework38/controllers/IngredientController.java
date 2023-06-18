@@ -16,9 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * Class - controller for working with ingredients, containing a set of API endpoints
+ *
+ * @see IngredientService
+ */
 @RestController
 @RequestMapping("/ingredient")
-@Tag(name = "Ингредиенты", description = "CRUD-операции и другие эндпоинты для работы с ингредиентами")
+@Tag(name = "Ingredients", description = "CRUD operations and other endpoints for working with ingredients")
 public class IngredientController {
 
     public final IngredientService ingredientService;
@@ -28,13 +33,13 @@ public class IngredientController {
     }
 
     @Operation(
-            summary = "Добавление ингредиента",
-            description = "Добавление нового ингредиента из тела запроса с присвоением id из генератора"
+            summary = "Adding an Ingredient",
+            description = "Adding a new ingredient from the request body with an id assigned from the generator"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Ингредиент был добавлен",
+                    description = "The ingredient has been added",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -44,7 +49,7 @@ public class IngredientController {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Некорректные параметры ингредиента"
+                    description = "Incorrect ingredient parameters"
             )
     }
     )
@@ -55,17 +60,17 @@ public class IngredientController {
     }
 
     @Operation(
-            summary = "Поиск ингредиента по id ингредиента",
-            description = "Можно искать по одному параметру"
+            summary = "Search for an ingredient by ingredient id",
+            description = "You can search by one parameter"
     )
-    @Parameters( value = {
+    @Parameters(value = {
             @Parameter(name = "id", example = "1")
     }
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Ингредиент был найден",
+                    description = "The ingredient has been found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -75,7 +80,7 @@ public class IngredientController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Ингредиент не был найден"
+                    description = "The ingredient is not found"
             )
     }
     )
@@ -85,13 +90,13 @@ public class IngredientController {
     }
 
     @Operation(
-            summary = "Поиск всех ингредиентов",
-            description = "Возвращает список всех ингредиентов, без параметров"
+            summary = "Search all ingredients",
+            description = "Returns a list of all ingredients, no parameters"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Ингредиенты были найдены",
+                    description = "The ingredients have been found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -101,7 +106,7 @@ public class IngredientController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Ингредиенты не были найдены"
+                    description = "The ingredients is not found"
             )
     }
     )
@@ -114,17 +119,17 @@ public class IngredientController {
     }
 
     @Operation(
-            summary = "Изменение ингредиента по id ингредиента",
-            description = "Можно искать по одному параметру"
+            summary = "Changing an ingredient by ingredient id",
+            description = "You can search by one parameter"
     )
-    @Parameters( value = {
+    @Parameters(value = {
             @Parameter(name = "id", example = "1")
     }
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Ингредиент был изменен",
+                    description = "The ingredient has been changed",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -134,11 +139,11 @@ public class IngredientController {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Некорректные параметры ингредиента"
+                    description = "Incorrect ingredient parameters"
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Ингредиент не был найден"
+                    description = "The ingredient is not found"
             )
     }
     )
@@ -148,17 +153,17 @@ public class IngredientController {
     }
 
     @Operation(
-            summary = "Удаление ингредиента по id ингредиента",
-            description = "Можно искать по одному параметру"
+            summary = "Removing an ingredient by ingredient id",
+            description = "You can search by one parameter"
     )
-    @Parameters( value = {
+    @Parameters(value = {
             @Parameter(name = "id", example = "1")
     }
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Ингредиент был удален",
+                    description = "The ingredient has been removed",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -168,7 +173,7 @@ public class IngredientController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Ингредиент не был найден"
+                    description = "The ingredient is not found"
             )
     }
     )
