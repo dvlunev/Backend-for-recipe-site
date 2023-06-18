@@ -25,7 +25,7 @@ SQL:
 
 ### User`s functionality: ###
 
-With controllers and APIs, the user can:
+With controllers and APIs, a user can:
 - Adding an ingredient.
 - Editing an ingredient by id.
 - Removing an ingredient.
